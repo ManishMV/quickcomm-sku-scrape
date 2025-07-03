@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Plus, CheckCircle, Loader2 } from 'lucide-react';
 
 interface ProductUrl {
@@ -15,8 +14,8 @@ const ChromeExtensionPopup = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    platform: '',
-    cities: ''
+    phone: '',
+    city: ''
   });
   const [productUrls, setProductUrls] = useState<ProductUrl[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +57,7 @@ const ChromeExtensionPopup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.platform || productUrls.length === 0) return;
+    if (!formData.name || !formData.email || !formData.phone || productUrls.length === 0) return;
     if (emailError) return;
 
     setIsLoading(true);
@@ -70,7 +69,7 @@ const ChromeExtensionPopup = () => {
     setIsSubmitted(true);
   };
 
-  const isFormValid = formData.name && formData.email && formData.platform && productUrls.length > 0 && !emailError;
+  const isFormValid = formData.name && formData.email && formData.phone && productUrls.length > 0 && !emailError;
 
   if (isSubmitted) {
     return (
@@ -79,12 +78,12 @@ const ChromeExtensionPopup = () => {
           <CheckCircle className="w-16 h-16 text-green-500" />
           <h3 className="text-lg font-semibold text-gray-900">Request Received!</h3>
           <p className="text-sm text-gray-600 leading-relaxed">
-            ✅ Your SKU-level availability report will be sent to <strong>{formData.email}</strong> within 30–60 minutes.
+            ✅ Your SKU-level availability report will be sent to <strong>{formData.email}</strong> within 30 minutes.
           </p>
           <Button 
             onClick={() => {
               setIsSubmitted(false);
-              setFormData({ name: '', email: '', platform: '', cities: '' });
+              setFormData({ name: '', email: '', phone: '', city: '' });
               setProductUrls([]);
             }}
             variant="outline"
@@ -141,19 +140,18 @@ const ChromeExtensionPopup = () => {
             {emailError && <p className="text-xs text-red-500">{emailError}</p>}
           </div>
 
-          {/* Platform Field */}
+          {/* Phone Field */}
           <div className="space-y-1">
-            <Label className="text-xs font-medium text-gray-700">Platform</Label>
-            <Select value={formData.platform} onValueChange={(value) => setFormData({ ...formData, platform: value })}>
-              <SelectTrigger className="h-9 text-sm">
-                <SelectValue placeholder="Select platform" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="zepto">Zepto</SelectItem>
-                <SelectItem value="blinkit">Blinkit</SelectItem>
-                <SelectItem value="instamart">Instamart</SelectItem>
-              </SelectContent>
-            </Select>
+            <Label htmlFor="phone" className="text-xs font-medium text-gray-700">Phone Number</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              placeholder="+91 9876543210"
+              className="h-9 text-sm"
+              required
+            />
           </div>
 
           {/* Add Product Section */}
@@ -195,14 +193,14 @@ const ChromeExtensionPopup = () => {
             </div>
           </div>
 
-          {/* Cities Field */}
+          {/* City Field */}
           <div className="space-y-1">
-            <Label htmlFor="cities" className="text-xs font-medium text-gray-700">City/Cities</Label>
+            <Label htmlFor="city" className="text-xs font-medium text-gray-700">City</Label>
             <Input
-              id="cities"
-              value={formData.cities}
-              onChange={(e) => setFormData({ ...formData, cities: e.target.value })}
-              placeholder="Mumbai, Delhi, Bangalore"
+              id="city"
+              value={formData.city}
+              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              placeholder="Mumbai"
               className="h-9 text-sm"
             />
           </div>
