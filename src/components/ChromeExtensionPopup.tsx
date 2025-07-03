@@ -57,7 +57,7 @@ const ChromeExtensionPopup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || productUrls.length === 0) return;
+    if (!formData.name || !formData.email || !formData.phone || !formData.city || productUrls.length === 0) return;
     if (emailError) return;
 
     setIsLoading(true);
@@ -69,11 +69,11 @@ const ChromeExtensionPopup = () => {
     setIsSubmitted(true);
   };
 
-  const isFormValid = formData.name && formData.email && formData.phone && productUrls.length > 0 && !emailError;
+  const isFormValid = formData.name && formData.email && formData.phone && formData.city && productUrls.length > 0 && !emailError;
 
   if (isSubmitted) {
     return (
-      <div className="w-[350px] h-[600px] bg-white p-6 font-sans">
+      <div className="h-full bg-white p-6 font-sans">
         <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
           <CheckCircle className="w-16 h-16 text-green-500" />
           <h3 className="text-lg font-semibold text-gray-900">Request Received!</h3>
@@ -97,7 +97,7 @@ const ChromeExtensionPopup = () => {
   }
 
   return (
-    <div className="w-[350px] h-[600px] bg-white flex flex-col font-sans">
+    <div className="h-full bg-white flex flex-col font-sans">
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center space-x-3">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
@@ -114,7 +114,7 @@ const ChromeExtensionPopup = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Field */}
           <div className="space-y-1">
-            <Label htmlFor="name" className="text-xs font-medium text-gray-700">Name</Label>
+            <Label htmlFor="name" className="text-xs font-medium text-gray-700">Name *</Label>
             <Input
               id="name"
               value={formData.name}
@@ -127,7 +127,7 @@ const ChromeExtensionPopup = () => {
 
           {/* Email Field */}
           <div className="space-y-1">
-            <Label htmlFor="email" className="text-xs font-medium text-gray-700">Company Email</Label>
+            <Label htmlFor="email" className="text-xs font-medium text-gray-700">Company Email *</Label>
             <Input
               id="email"
               type="email"
@@ -142,7 +142,7 @@ const ChromeExtensionPopup = () => {
 
           {/* Phone Field */}
           <div className="space-y-1">
-            <Label htmlFor="phone" className="text-xs font-medium text-gray-700">Phone Number</Label>
+            <Label htmlFor="phone" className="text-xs font-medium text-gray-700">Phone Number *</Label>
             <Input
               id="phone"
               type="tel"
@@ -157,7 +157,7 @@ const ChromeExtensionPopup = () => {
           {/* Add Product Section */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-xs font-medium text-gray-700">Products ({productUrls.length}/5)</Label>
+              <Label className="text-xs font-medium text-gray-700">Products ({productUrls.length}/5) *</Label>
               <Button
                 type="button"
                 onClick={addCurrentPageUrl}
@@ -172,7 +172,7 @@ const ChromeExtensionPopup = () => {
             
             {productUrls.length === 0 && (
               <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
-                Click "Add Product" to capture the current page URL
+                Click "Add Product" to capture the current page URL (Required)
               </p>
             )}
 
@@ -195,13 +195,14 @@ const ChromeExtensionPopup = () => {
 
           {/* City Field */}
           <div className="space-y-1">
-            <Label htmlFor="city" className="text-xs font-medium text-gray-700">City</Label>
+            <Label htmlFor="city" className="text-xs font-medium text-gray-700">City *</Label>
             <Input
               id="city"
               value={formData.city}
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
               placeholder="Mumbai"
               className="h-9 text-sm"
+              required
             />
           </div>
 
