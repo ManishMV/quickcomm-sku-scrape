@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Plus, CheckCircle, Loader2, X } from 'lucide-react';
 
 interface ProductUrl {
@@ -17,7 +19,8 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
+    platform: '',
+    linkedin: '',
     city: ''
   });
   const [productUrls, setProductUrls] = useState<ProductUrl[]>([]);
@@ -60,7 +63,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.phone || !formData.city || productUrls.length === 0) return;
+    if (!formData.name || !formData.email || !formData.platform || !formData.linkedin || !formData.city || productUrls.length === 0) return;
     if (emailError) return;
 
     setIsLoading(true);
@@ -72,7 +75,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
     setIsSubmitted(true);
   };
 
-  const isFormValid = formData.name && formData.email && formData.phone && formData.city && productUrls.length > 0 && !emailError;
+  const isFormValid = formData.name && formData.email && formData.platform && formData.linkedin && formData.city && productUrls.length > 0 && !emailError;
 
   if (isSubmitted) {
     return (
@@ -94,7 +97,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
           <Button 
             onClick={() => {
               setIsSubmitted(false);
-              setFormData({ name: '', email: '', phone: '', city: '' });
+              setFormData({ name: '', email: '', platform: '', linkedin: '', city: '' });
               setProductUrls([]);
             }}
             variant="outline"
@@ -126,7 +129,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
         </div>
         <div>
           <h1 className="text-sm font-semibold leading-tight">QuickComm Brand SKU Scraper</h1>
-          <p className="text-xs opacity-90">by RevQ</p>
+          <p className="text-xs opacity-90">by RevQ India</p>
         </div>
       </div>
 
@@ -135,7 +138,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name Field */}
           <div className="space-y-1">
-            <Label htmlFor="name" className="text-xs font-medium text-gray-700">Name *</Label>
+            <Label htmlFor="name" className="text-xs font-medium text-gray-700">Your Name *</Label>
             <Input
               id="name"
               value={formData.name}
@@ -148,7 +151,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
 
           {/* Email Field */}
           <div className="space-y-1">
-            <Label htmlFor="email" className="text-xs font-medium text-gray-700">Company Email *</Label>
+            <Label htmlFor="email" className="text-xs font-medium text-gray-700">Your email (company email) *</Label>
             <Input
               id="email"
               type="email"
@@ -161,15 +164,30 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
             {emailError && <p className="text-xs text-red-500">{emailError}</p>}
           </div>
 
-          {/* Phone Field */}
+          {/* Platform Field */}
           <div className="space-y-1">
-            <Label htmlFor="phone" className="text-xs font-medium text-gray-700">Phone Number *</Label>
+            <Label htmlFor="platform" className="text-xs font-medium text-gray-700">Platform *</Label>
+            <Select value={formData.platform} onValueChange={(value) => setFormData({ ...formData, platform: value })}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue placeholder="Select platform" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="zepto">Zepto</SelectItem>
+                <SelectItem value="blinkit">BlinkIt</SelectItem>
+                <SelectItem value="swiggy-instamart">Swiggy Instamart</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* LinkedIn Field */}
+          <div className="space-y-1">
+            <Label htmlFor="linkedin" className="text-xs font-medium text-gray-700">Your LinkedIn profile link *</Label>
             <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="+91 9876543210"
+              id="linkedin"
+              type="url"
+              value={formData.linkedin}
+              onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+              placeholder="https://linkedin.com/in/yourprofile"
               className="h-9 text-sm"
               required
             />
@@ -193,7 +211,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
             
             {productUrls.length === 0 && (
               <p className="text-xs text-gray-500 bg-gray-50 p-2 rounded">
-                Click "Add Product" to capture the current page URL (Required)
+                Go to product page on selected platform and Click "Add Product" to capture the current page URL (required)
               </p>
             )}
 
