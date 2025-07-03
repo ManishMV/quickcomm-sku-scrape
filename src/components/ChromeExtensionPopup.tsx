@@ -1,16 +1,19 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Trash2, Plus, CheckCircle, Loader2 } from 'lucide-react';
+import { Trash2, Plus, CheckCircle, Loader2, X } from 'lucide-react';
 
 interface ProductUrl {
   id: string;
   url: string;
 }
 
-const ChromeExtensionPopup = () => {
+interface ChromeExtensionPopupProps {
+  onClose: () => void;
+}
+
+const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -73,7 +76,15 @@ const ChromeExtensionPopup = () => {
 
   if (isSubmitted) {
     return (
-      <div className="h-full bg-white p-6 font-sans">
+      <div className="h-full bg-white p-6 font-sans relative">
+        <Button
+          onClick={onClose}
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 h-8 w-8"
+        >
+          <X className="h-4 w-4" />
+        </Button>
         <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
           <CheckCircle className="w-16 h-16 text-green-500" />
           <h3 className="text-lg font-semibold text-gray-900">Request Received!</h3>
@@ -97,7 +108,17 @@ const ChromeExtensionPopup = () => {
   }
 
   return (
-    <div className="h-full bg-white flex flex-col font-sans">
+    <div className="h-full bg-white flex flex-col font-sans relative">
+      {/* Close Button */}
+      <Button
+        onClick={onClose}
+        variant="ghost"
+        size="icon"
+        className="absolute top-2 right-2 h-8 w-8 z-10"
+      >
+        <X className="h-4 w-4" />
+      </Button>
+
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center space-x-3">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
