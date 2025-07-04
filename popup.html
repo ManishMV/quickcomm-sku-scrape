@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickComm Brand SKU Scraper</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Close Button -->
+        <button id="closeBtn" class="close-btn">×</button>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">Q</div>
+                <div class="logo-text">
+                    <h1>QuickComm Brand SKU Scraper</h1>
+                    <p>by RevQ India</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="successState" class="success-state hidden">
+            <div class="success-content">
+                <div class="success-icon">✓</div>
+                <h3>Request Received!</h3>
+                <p>✅ Your SKU-level availability report will be sent to <strong id="successEmail"></strong> within 30 minutes.</p>
+                <button id="submitAnotherBtn" class="btn btn-outline">Submit Another Request</button>
+            </div>
+        </div>
+
+        <!-- Form Content -->
+        <div id="formContent" class="form-content">
+            <form id="skuForm">
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="name">Your Name *</label>
+                    <input type="text" id="name" placeholder="Your full name" required>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="email">Your email (company email) *</label>
+                    <input type="email" id="email" placeholder="you@company.com" required>
+                    <div id="emailError" class="error-message hidden">Please use your company email address</div>
+                </div>
+
+                <!-- LinkedIn Field -->
+                <div class="form-group">
+                    <label for="linkedin">Your LinkedIn profile link *</label>
+                    <input type="url" id="linkedin" placeholder="https://linkedin.com/in/yourprofile" required>
+                </div>
+
+                <!-- Platform Field -->
+                <div class="form-group">
+                    <label for="platform">Platform *</label>
+                    <select id="platform" required>
+                        <option value="">Select platform</option>
+                        <option value="zepto">Zepto</option>
+                        <option value="blinkit">BlinkIt</option>
+                        <option value="swiggy-instamart">Swiggy Instamart</option>
+                    </select>
+                </div>
+
+                <!-- Products Section -->
+                <div class="form-group">
+                    <div class="products-header">
+                        <label>Products (<span id="productCount">0</span>/5) *</label>
+                        <button type="button" id="addProductBtn" class="btn btn-sm">+ Add Product</button>
+                    </div>
+                    <div id="productPlaceholder" class="placeholder-message">
+                        Go to product page on selected platform and Click "Add Product" to capture the current page URL (required)
+                    </div>
+                    <div id="productsList" class="products-list"></div>
+                </div>
+
+                <!-- City Field -->
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" placeholder="Mumbai" required>
+                </div>
+
+                <!-- Calendly Section -->
+                <div class="form-group">
+                    <label>Book your results call *</label>
+                    <div class="calendly-section">
+                        <p>Schedule a call to discuss your results and next steps</p>
+                        <button type="button" id="calendlyBtn" class="btn btn-outline btn-full">
+                            📅 <span id="calendlyText">Book Call</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-full" disabled>
+                    <span id="submitText">Submit Request</span>
+                    <div id="loadingSpinner" class="spinner hidden">⏳</div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p class="footer-title">Need more?</p>
+            <p class="footer-text">
+                Want daily tracking, Share of Voice, or competitor insights? 
+                <a href="https://www.revq.in/contact-us" target="_blank">Talk to the RevQ India team</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
