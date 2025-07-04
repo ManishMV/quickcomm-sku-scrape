@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Trash2, Plus, CheckCircle, Loader2, X } from 'lucide-react';
+import { Trash2, Plus, CheckCircle, Loader2, X, Calendar } from 'lucide-react';
 
 interface ProductUrl {
   id: string;
@@ -19,9 +19,10 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    platform: '',
     linkedin: '',
-    city: ''
+    platform: '',
+    city: '',
+    calendlyBooked: false
   });
   const [productUrls, setProductUrls] = useState<ProductUrl[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,9 +62,15 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
     setProductUrls(productUrls.filter(product => product.id !== id));
   };
 
+  const handleCalendlyClick = () => {
+    // Open calendly link in new tab
+    window.open('https://calendly.com/dummy-link', '_blank');
+    setFormData({ ...formData, calendlyBooked: true });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.platform || !formData.linkedin || !formData.city || productUrls.length === 0) return;
+    if (!formData.name || !formData.email || !formData.linkedin || !formData.platform || !formData.city || !formData.calendlyBooked || productUrls.length === 0) return;
     if (emailError) return;
 
     setIsLoading(true);
@@ -75,7 +82,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
     setIsSubmitted(true);
   };
 
-  const isFormValid = formData.name && formData.email && formData.platform && formData.linkedin && formData.city && productUrls.length > 0 && !emailError;
+  const isFormValid = formData.name && formData.email && formData.linkedin && formData.platform && formData.city && formData.calendlyBooked && productUrls.length > 0 && !emailError;
 
   if (isSubmitted) {
     return (
@@ -97,7 +104,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
           <Button 
             onClick={() => {
               setIsSubmitted(false);
-              setFormData({ name: '', email: '', platform: '', linkedin: '', city: '' });
+              setFormData({ name: '', email: '', linkedin: '', platform: '', city: '', calendlyBooked: false });
               setProductUrls([]);
             }}
             variant="outline"
@@ -164,6 +171,20 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
             {emailError && <p className="text-xs text-red-500">{emailError}</p>}
           </div>
 
+          {/* LinkedIn Field */}
+          <div className="space-y-1">
+            <Label htmlFor="linkedin" className="text-xs font-medium text-gray-700">Your LinkedIn profile link *</Label>
+            <Input
+              id="linkedin"
+              type="url"
+              value={formData.linkedin}
+              onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
+              placeholder="https://linkedin.com/in/yourprofile"
+              className="h-9 text-sm"
+              required
+            />
+          </div>
+
           {/* Platform Field */}
           <div className="space-y-1">
             <Label htmlFor="platform" className="text-xs font-medium text-gray-700">Platform *</Label>
@@ -177,20 +198,6 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
                 <SelectItem value="swiggy-instamart">Swiggy Instamart</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-
-          {/* LinkedIn Field */}
-          <div className="space-y-1">
-            <Label htmlFor="linkedin" className="text-xs font-medium text-gray-700">Your LinkedIn profile link *</Label>
-            <Input
-              id="linkedin"
-              type="url"
-              value={formData.linkedin}
-              onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-              placeholder="https://linkedin.com/in/yourprofile"
-              className="h-9 text-sm"
-              required
-            />
           </div>
 
           {/* Add Product Section */}
@@ -245,6 +252,27 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
             />
           </div>
 
+          {/* Book Results Call Field */}
+          <div className="space-y-2">
+            <Label className="text-xs font-medium text-gray-700">Book your results call *</Label>
+            <div className="bg-gray-50 p-3 rounded border">
+              <p className="text-xs text-gray-600 mb-2">
+                Schedule a call to discuss your results and next steps
+              </p>
+              <Button
+                type="button"
+                onClick={handleCalendlyClick}
+                variant="outline"
+                size="sm"
+                className="w-full h-8 text-xs"
+                disabled={formData.calendlyBooked}
+              >
+                <Calendar className="w-3 h-3 mr-1" />
+                {formData.calendlyBooked ? 'Call Booked ✓' : 'Book Call'}
+              </Button>
+            </div>
+          </div>
+
           {/* Submit Button */}
           <Button
             type="submit"
@@ -268,8 +296,8 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
         <p className="text-xs text-gray-500 mb-2">Need more?</p>
         <p className="text-xs text-gray-700 leading-relaxed">
           Want daily tracking, Share of Voice, or competitor insights?{' '}
-          <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
-            Talk to the RevQ team
+          <a href="https://www.revq.in/contact-us" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 font-medium">
+            Talk to the RevQ India team
           </a>
         </p>
       </div>
