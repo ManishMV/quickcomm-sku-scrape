@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -285,7 +284,7 @@ const ChromeExtensionPopup = ({ onClose }: ChromeExtensionPopupProps) => {
                 Submitting...
               </>
             ) : (
-              'Submit Scrape Request'
+              'Submit Request'
             )}
           </Button>
         </form>
